@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserTeams extends Migration
+class UserTeams extends Migration
 {
     /**
      * Run the migrations.
@@ -13,6 +13,7 @@ class CreateUserTeams extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('user_teams');
         Schema::create('user_teams', function (Blueprint $table) {
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
