@@ -15,3 +15,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/token/{id}', 'Api\ApiTokenController@token')->name('token');
+Route::post('/register', 'Api\RegisterController@create')->name('create');
+Route::post('/update/{id}', 'Api\RegisterController@update')->name('update');
