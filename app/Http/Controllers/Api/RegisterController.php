@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -21,7 +22,6 @@ class RegisterController extends Controller
     protected function create(Request $data)
     {
         $token = Str::random(60);
-        
         $user = User::create([
             'name' => $data->name,
             'email' => $data->email,
@@ -50,4 +50,21 @@ class RegisterController extends Controller
         
         return ['token' => $token, 'user' => $user];
     }
+
+    protected function login(Request $data)
+    {
+        $credentials = $data->only('email', 'password');
+        
+        if (Auth::attempt($credentials)) {
+            $token = Str::random(60);
+            $user = $data->user();
+            $user->api_token = hash('sha256', $token);
+            $user->save();
+            return ['token' => $token];
+        }else{
+            return "User or Password Incorrect";    
+        }
+     
+    }
+
 }
