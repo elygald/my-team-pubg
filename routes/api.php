@@ -20,3 +20,5 @@ Route::post('/token/{id}', 'Api\ApiTokenController@token')->name('token');
 Route::post('/register', 'Api\RegisterController@create')->name('create');
 Route::post('/update/{id}', 'Api\RegisterController@update')->name('update');
 Route::post('/login', 'Api\RegisterController@login')->name('login');
+Route::post('/player', 'Api\PlayerController@create')->name('create');
+Route::post('/player/{id}', 'Api\PlayerController@update')->name('update');
