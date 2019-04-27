@@ -16,10 +16,10 @@ class CreateTeams extends Migration
         Schema::create('teams', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
-            $table->string('image');
-            $table->string('tag');
-            $table->string('region');
-            $table->boolean('status');
+            $table->string('image')->nullable();
+            $table->string('tag')->nullable();
+            $table->string('region')->nullable();
+            $table->boolean('status')->nullable();
             $table->timestamps();
         });
     }

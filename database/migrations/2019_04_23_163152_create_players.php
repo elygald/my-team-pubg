@@ -15,12 +15,10 @@ class CreatePlayers extends Migration
     {
         Schema::create('players', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
             $table->string('nickname')->unique();
-            $table->string('image');
-            $table->string('type_gamer');
-            $table->string('region');
+            $table->string('image')->nullable();
+            $table->string('type_gamer')->nullable();
+            $table->string('region')->nullable();
             $table->timestamps();
         });
     }
