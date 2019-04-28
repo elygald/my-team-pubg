@@ -14,7 +14,7 @@ class AddPubgIdToPlayer extends Migration
     public function up()
     {
         Schema::table('players', function (Blueprint $table) {
-            $table->integer('pubg_id')->unsigned()->nullable();
+            $table->string('pubg_id')->nullable()->unique();
         });
     }
 

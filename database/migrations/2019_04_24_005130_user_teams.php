@@ -13,8 +13,8 @@ class UserTeams extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('user_teams');
-        Schema::create('user_teams', function (Blueprint $table) {
+        Schema::dropIfExists('user_team');
+        Schema::create('user_team', function (Blueprint $table) {
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('team_id')->unsigned();
@@ -30,6 +30,6 @@ class UserTeams extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_teams');
+        Schema::dropIfExists('user_team');
     }
 }
