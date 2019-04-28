@@ -11,6 +11,7 @@ use Exception;
 class PlayerController extends Controller
 {
     public function create(Request $request){
+
         $validator = Validator::make($request->all(), [
             'nickname' => 'required|unique:players',
         ]);
@@ -27,19 +28,29 @@ class PlayerController extends Controller
 
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $data, $id){
         try{
+            
             $player = Player::find($id);
-            $player->nickname =(!empty($data->nickname) && isset($data->nickname))? $request->nickname :$player->nickname ;
-            $player->image = (!empty($data->image) && isset($data->image))?$request->image : $player->image;
-            $player->type_gamer = (!empty($data->type_gamer) && isset($data->type_gamer))?$request->type_gamer:$player->type_gamer;
-            $player->region = (!empty($data->region) && isset($data->region))?$request->region:$player->region;
+           
+            $player->nickname =(!empty($data->nickname) && isset($data->nickname))? $data->nickname :$player->nickname ;
+
+            $player->image = (!empty($data->image) && isset($data->image))?$data->image : $player->image;
+            $player->type_gamer = (!empty($data->type_gamer) && isset($data->type_gamer))?$data->type_gamer:$player->type_gamer;
+            $player->region = (!empty($data->region) && isset($data->region))?$data->region:$player->region;
+            $player->pubg_id = (!empty($data->pubg_id) && isset($data->pubg_id))?$data->pubg_id:$player->pubg_id;
             $player->save();
 
             return "Update success";
         }catch(Exception $e){
-            return "could not update player";
+            return "could not update player". $e;
         }
+    }
 
+    public function find(Request $player, $name){
+
+        $player = Player::where('nickname', 'like', '%' . $name . '%')->get();
+
+        return json_encode($player);
     }
 }

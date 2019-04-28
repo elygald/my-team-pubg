@@ -13,7 +13,8 @@ class CreatePlayerUsers extends Migration
      */
     public function up()
     {
-        Schema::create('player_users', function (Blueprint $table) {
+        Schema::dropIfExists('player_user');
+        Schema::create('player_user', function (Blueprint $table) {
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('player_id')->unsigned();
@@ -29,6 +30,6 @@ class CreatePlayerUsers extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('player_users');
+        Schema::dropIfExists('player_user');
     }
 }

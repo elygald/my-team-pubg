@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\User;
+use App\Player;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -19,17 +20,26 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(Request $data)
+    protected function create(Request $data, $player_id)
     {
-        $token = Str::random(60);
-        $user = User::create([
-            'name' => $data->name,
-            'email' => $data->email,
-            'password' => Hash::make($data->password),
-            'api_token' => hash('sha256', $token),
-        ]);
-
-        return ['token' => $token, 'user' => $user];
+        try{
+            $token = Str::random(60);
+            $user = User::create([
+                'name' => $data->name,
+                'email' => $data->email,
+                'password' => Hash::make($data->password),
+                'api_token' => hash('sha256', $token),
+            ]);
+            if(!empty($player_id) && isset($player_id)){
+                $player = Player::find($player_id);
+            
+                $user->player()->attach($player);
+            }
+            
+            return ['token' => $token, 'user' => $user, 'player'=>$player];
+        }catch(Exception $e){
+            return "could not create User". $e;
+        }
     }
     /**
      * Update a new user instance after a valid registration.
@@ -53,6 +63,15 @@ class RegisterController extends Controller
 
     protected function login(Request $data)
     {
+        $validator = Validator::make($data->all(), [
+            'Email' => 'required',
+            'password' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return "Email and Password required";
+        }
+
         $credentials = $data->only('email', 'password');
         
         if (Auth::attempt($credentials)) {
