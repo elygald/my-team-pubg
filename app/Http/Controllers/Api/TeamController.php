@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Player;
 use App\Team;
+use App\Invite_to_team;
 use Validator;
 use Exception;
 
@@ -22,7 +23,7 @@ class TeamController extends Controller
         if($validator->fails()){
             return $validator->errors();
         }
-
+        $user = $request->user();
         $team = Team::create([
             'name'  => $request->name,
             'image' => $request->image,
@@ -30,6 +31,9 @@ class TeamController extends Controller
             'region'=> $request->region,
             'status'=> true
         ]);
+        $user->team()->attach($team);
+        $player = $user->player()->first();
+        $team->player()->attach($player);
 
         return ["success"=>$team];
     }
@@ -48,5 +52,15 @@ class TeamController extends Controller
         $team = Team::find($team_id);
         $player = $team->player;
         return json_encode(['team' => $team]);
+    }
+
+    public function isInvite($team_id){
+        $invite = Invite_to_team::where('team_id', $team_id)->get();
+        $result = $invite->map(function($item, $key)
+        {
+            $item->player;
+            return ['invite'=>$item];
+        });
+        return ['invite'=> ['count' => $invite->count(), $result ]];
     }
 }

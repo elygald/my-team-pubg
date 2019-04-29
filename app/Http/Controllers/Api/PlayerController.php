@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Player;
 use Validator;
 use Exception;
+use App\Invite_to_player;
 
 class PlayerController extends Controller
 {
@@ -53,4 +54,15 @@ class PlayerController extends Controller
 
         return json_encode($player);
     }
+
+    public function isInvite($player_id){
+        $invite = Invite_to_player::where('player_id', $player_id)->get();
+        $result = $invite->map(function($item, $key)
+        {
+            $item->team;
+            return ['invite'=>$item];
+        });
+        return ['invite'=> ['count' => $invite->count(), $result ]];
+    }
+
 }
