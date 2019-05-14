@@ -22,6 +22,16 @@ class RegisterController extends Controller
      */
     protected function create(Request $data, $player_id)
     {
+        $validator = Validator::make($data->all(), [
+            'name' => 'required|',
+            'email' => 'required|unique:users',
+            'password' => 'required|'
+        ]);
+
+        if($validator->fails()){
+            return $validator->errors();
+        }
+        
         try{
             $token = Str::random(60);
             $user = User::create([

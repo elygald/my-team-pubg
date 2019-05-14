@@ -51,7 +51,9 @@ class PlayerController extends Controller
     public function find(Request $player, $name){
 
         $player = Player::where('nickname', 'like', '%' . $name . '%')->get();
-
+        if(count($player) == 0){
+            return "no players found under this name: " . $name;
+        }
         return json_encode($player);
     }
 
