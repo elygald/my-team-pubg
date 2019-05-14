@@ -35,3 +35,6 @@ Route::post('/player/{id}', 'Api\PlayerController@update')->name('update');
 Route::get('/player/{name}', 'Api\PlayerController@find')->name('find');
 Route::get('/teams/{name}', 'Api\TeamController@find')->name('find');
 Route::get('/team/{team_id}', 'Api\TeamController@show')->name('show');
+Route::get('/', function(){
+    return "My team API version 0.0.1";
+});
