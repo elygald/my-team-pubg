@@ -1,4 +1,4 @@
-### init
+### Starting
 
 ``` bash
 # git clone 
