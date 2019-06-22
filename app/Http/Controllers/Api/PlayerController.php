@@ -18,14 +18,18 @@ class PlayerController extends Controller
         ]);
 
         if($validator->fails()){
-            return "nickname required";
+           if($validator->errors()->get("nickname")[0] == "The nickname has already been taken."){
+                $player = Player::where('nickname', '=', $request->nickname)->get();
+                return json_encode($player);
+           }
+           return "nickname required";
         }
 
         $player = Player::create([
-            'nickname' => $request->nickname,
+            'nickname' => $request->nickname
         ]);
 
-        return "success";
+        return json_encode($player);
 
     }
 
